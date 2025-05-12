@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Minimax</string>
+    <string name="scores1">Очки: </string>
+    <string name="scores_gameover">Конец партии: </string>
+    <string name="scores">Очки: \u0020 %d</string>
+    <string name="level">Уровень: %d  Достижение: %d</string>
+    <string name="continue_now">Продолжить</string>
+    <string name="finish">Завершить партию</string>
+    <string name="begin">Начать сначала</string>
+</resources>
