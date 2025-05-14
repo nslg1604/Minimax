@@ -63,13 +63,14 @@ fun NumbersScreen(viewModel: MainViewModel) {
     ) {
         Text(
             text = stringResource(R.string.app_name),
-            fontSize = 30.sp,
+            fontSize = 26.sp,
             textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
         )
 
         Text(
-            text = stringResource(R.string.level, MyData.level, MyData.achievement),
+            text = stringResource(R.string.level, viewModel.currentLevel, MyData.achievement),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(2.dp),
@@ -79,7 +80,17 @@ fun NumbersScreen(viewModel: MainViewModel) {
 
         Text(
             text = buildAnnotatedString {
-                append(stringResource(state.titleId).replace(":", ": "))
+                val fullText = stringResource(state.titleId).replace(":", ": ")
+                val prefix = fullText // левая часть текста до суммы
+                val sumText = state.sum.toString()
+
+                if (state.titleId == R.string.scores_gameover) {
+                    withStyle(style = SpanStyle(color = Color.Blue)) {
+                        append(prefix)
+                    }
+                } else {
+                    append(prefix)
+                }
                 withStyle(
                     style = SpanStyle(
                         color = if (state.sum > 0) colorResource(R.color.positive)
@@ -97,6 +108,28 @@ fun NumbersScreen(viewModel: MainViewModel) {
             fontSize = 24.sp,
             textAlign = TextAlign.Center
         )
+
+//        Text(
+//            text = buildAnnotatedString {
+//                append(stringResource(state.titleId).replace(":", ": "))
+//                withStyle(
+//                    style = SpanStyle(
+//                        color = if (state.sum > 0) colorResource(R.color.positive)
+//                        else if (state.sum < 0) colorResource(R.color.negative)
+//                        else colorResource(R.color.zero),
+//                        fontWeight = FontWeight.Bold
+//                    ),
+//                ) {
+//                    append(state.sum.toString())
+//                }
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(2.dp),
+//            fontSize = 24.sp,
+//            textAlign = TextAlign.Center
+//        )
+//
         Spacer(modifier = Modifier.height(24.dp))
 
         NumbersTable(
@@ -106,6 +139,7 @@ fun NumbersScreen(viewModel: MainViewModel) {
                 viewModel.processIntent(NumbersIntent.NumberClicked(row, col))
             }
         )
+
         if (viewModel.gameStarting) {
             viewModel.playSound(R.raw.loading)
             viewModel.gameStarting = false
@@ -231,7 +265,7 @@ fun ContinueButton(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.finish),
+            text = stringResource(R.string.new_game),
             color = Color.Black
         )
     }

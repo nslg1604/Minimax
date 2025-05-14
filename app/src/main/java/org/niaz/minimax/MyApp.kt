@@ -9,16 +9,16 @@ import timber.log.Timber
 class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        myApp = this
+//        myApp = this
         Timber.plant(MyDebugTree())
         Timber.d("MyApp - onCreate")
     }
 
 
-    companion object {
-        lateinit var myApp: MyApp
-        fun getInstance(): MyApp {
-            return myApp
-        }
-    }
+//    companion object {
+//        lateinit var myApp: MyApp
+//        fun getInstance(): MyApp {
+//            return myApp
+//        }
+//    }
 }

@@ -3,7 +3,7 @@ package org.niaz.minimax.utils
 import org.niaz.minimax.data.MyLevel
 import timber.log.Timber
 
-class ComputerMove (val myLevel: MyLevel) {
+class Computer (val myLevel: MyLevel) {
     var tableSize:Int = 3
     var deepMax: Int = 1
     var deep: Int = 0
@@ -24,10 +24,10 @@ class ComputerMove (val myLevel: MyLevel) {
 
     fun initTable(numbers: List<Int?>){
         tableSize = myLevel.tableSize
-        deep = myLevel.deep
+        deepMax = myLevel.deep
 
         var index = 0
-        Timber.d("ComputerMove - initTable tableSize=$tableSize numbers.size=${numbers.size} deep=$deep")
+        Timber.d("Computer - initTable tableSize=$tableSize deepMax=$deepMax numbers.size=${numbers.size}")
         for (i in 0 until tableSize) {
             var line = ""
             for (j in 0 until tableSize) {
@@ -43,51 +43,42 @@ class ComputerMove (val myLevel: MyLevel) {
      * Converted from my Java version app
      */
     fun calcRecursive(i1: Int, sumInput: Int): Int {
-        Timber.d("=== ComputerMove - calcRecursive i1=$i1 sumInput=$sumInput status=$status")
+        Timber.d("*** Computer - calcRecursive i1=$i1 sumInput=$sumInput status=$status")
         jSelected = -1
         deep++
 
         var max = -999
-        var sumNew = sumInput
         for (j in 0 until tableSize) {
             val cellJ = table[i1][j]
-            Timber.d("--for j=$j i1=$i1 cell=$cellJ deep=$deep sumNew=$sumNew usedI.size=${usedI.size} savedNum.size=${savedNum.size}")
             if (cellJ == NUMBER_USED) continue
-            sumNew = sumInput + cellJ
-
+            var sumNew = sumInput + cellJ
+            Timber.d("===for j=$j i1=$i1 cell=$cellJ sumNew=$sumNew deep=$deep usedI.size=${usedI.size} savedNum.size=${savedNum.size}")
             addUsed(i1,j)
-            table[i1][j] = NUMBER_USED
+
             var min = 999
             var iMin = -1
 
             for (i in 0 until tableSize) {
-                Timber.d("+for i=$i j=$j usedI.size=" + usedI.size + " usedJ.size=" + usedJ.size + " savedNum.size=" + savedNum.size)
                 val cellI = table[i][j]
                 if (cellI == NUMBER_USED) continue
-                var difference = cellJ - cellI
-                if (deep == 1) difference = difference * 2
+                val difference = cellJ - cellI
+ //               if (deep == 1) difference = difference * 2
                 sumNew = sumInput + difference
-                if (deep == deepMax && nTurn < halfMyTurns) {
-                    sumNew = sumInput + cellJ / 2 - table[i][j] / 2
-                }
+//                if (deep == deepMax && nTurn < halfMyTurns) {
+//                    sumNew = sumInput + cellJ / 2 - cellI/ 2
+//                }
+//                Timber.d("-----for j=$j i=$i cell=$cellI sumNew=$sumNew  deep=$deep usedI.size=${usedI.size} savedNum.size=${savedNum.size}\"")
 
-                if (deep < deepMax && sumNew > minNoNextStep) {
+                if (deep < deepMax /*&& sumNew > minNoNextStep*/) {
                     savedMin.add(min)
                     savedIMin.add(iMin)
                     savedJSelected.add(jSelected)
 
                     addUsed(i, j)
-                    table[i][j] = NUMBER_USED
-
                     sumNew = calcRecursive(i, sumNew)
+                    restoreUsed()
 
-                    var k: Int = usedI.size - 1
-                    Timber.d("REST " + usedI.get(k) + "," + usedJ.get(k) + " tab=" + savedNum.get(k) + " size=" + usedI.size)
-                    table[usedI.get(k)][usedJ.get(k)] = savedNum.get(k)
-                    removeUsed(k)
-
-                    k = savedJSelected.size - 1
-
+                    val k:Int = savedJSelected.size - 1
                     min = savedMin.get(k)
                     iMin = savedIMin.get(k)
                     jSelected = savedJSelected.get(k)
@@ -101,40 +92,37 @@ class ComputerMove (val myLevel: MyLevel) {
                     min = sumNew
                     iMin = i
                 }
-                Timber.d("for(i)-end i=" + i + " j=" + j + " sumNew=" + sumNew + " min=" + min + " iMin=" + iMin + " deep=" + deep)
+                Timber.d("for i end j=$j i=$i sumNew=$sumNew min=$min iMin=$iMin deep=$deep")
             } //i
 
-            val k: Int = usedI.size - 1
-            Timber.d("REST " + usedI.get(k) + "," + usedJ.get(k) + " tab=" + savedNum.get(k) + " size=" + usedI.size)
-            table[usedI.get(k)][usedJ.get(k)] = savedNum.get(k)
-            removeUsed(k)
-//
+            restoreUsed()
+
             if (iMin < 0) {  //no i - end of game
-                Timber.d("[iMin<0" + " sumNew=" + sumNew + "]")
-                min = if (sumNew >= 0) 500
-                else -500
+                Timber.d("game over for j=$j" + " sumNew=" + sumNew)
+                min = if (sumNew <= 0) -100
+                else 100
             }
             if (min > max) {
                 max = min
                 jSelected = j
             }
-
-//            Timber.d("A i1=" + i1 + " j=" + j + " iMin=" + iMin
-//                 + " min=" + min + " max=" + max + " sumNew=" + sumNew
-//                 + " table[i1][j]=" + table[i1][j]
-//                 + " jSelected=" + jSelected + " deep=" + deep)
+            Timber.d("result j=$j i1=$i1 max=$max iMin=$iMin")
         } //j
 
         if (jSelected < 0) {  //no j to select
             Timber.d("jSelected<0")
             max = sumInput
         }
-        Timber.d("return max=" + max + " jSelected=" + jSelected + " deep=" + deep)
+        Timber.d("return jSelected=$jSelected max=$max deep=$deep")
         deep--
-        return jSelected
+        return max
     }
 
-    fun removeUsed(k: Int){
+    fun restoreUsed(){
+        val k: Int = usedI.size - 1
+//        Timber.d("restoreUsed" + usedI.get(k) + "," + usedJ.get(k) + " tab=" + savedNum.get(k) + " size=" + usedI.size)
+        table[usedI.get(k)][usedJ.get(k)] = savedNum.get(k)
+
         usedI.removeAt(k)
         usedJ.removeAt(k)
         savedNum.removeAt(k)
@@ -144,6 +132,7 @@ class ComputerMove (val myLevel: MyLevel) {
         usedI.add(i)
         usedJ.add(j)
         savedNum.add(table[i][j])
+        table[i][j] = NUMBER_USED
 //        Timber.d("add after usedI.size=" + usedI.size + " usedJ.size=" + usedJ.size + " savedNum.size=" + savedNum.size)
     }
 

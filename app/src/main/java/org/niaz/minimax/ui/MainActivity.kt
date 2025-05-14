@@ -14,6 +14,7 @@ import org.niaz.minimax.mvi.NumbersIntent
 import dagger.hilt.android.AndroidEntryPoint
 import org.niaz.minimax.mvi.MainViewModel
 import org.niaz.minimax.ui.theme.MyTheme
+import org.niaz.minimax.utils.MyConst
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -22,6 +23,8 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.newGameSelected = intent.getBooleanExtra(MyConst.KEY_NEW_GAME, false)
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         Timber.d("MainActivity created")
 
