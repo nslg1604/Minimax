@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Minimax"
+rootProject.name = "Maximin"
 include(":app")

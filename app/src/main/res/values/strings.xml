@@ -1,13 +1,15 @@
 <resources>
-    <string name="app_name">Minimax</string>
+    <string name="app_name">Maximin</string>
     <string name="scores1">Очки: </string>
     <string name="scores_gameover">Конец партии: </string>
     <string name="scores">Очки: \u0020 %d</string>
-    <string name="level">Уровень: %d  Достижение: %d</string>
+<!--    <string name="level">Уровень: %d  Достижение: %d</string>-->
+    <string name="level">Уровень: %s  Победы: %d</string>
     <string name="continue_now">Продолжить</string>
     <string name="finish">Завершить партию</string>
     <string name="continue_game">Продолжить игру</string>
     <string name="new_game">Новая игра</string>
     <string name="rules">Правила игры</string>
-    <string name="help">Ваша задача набрать больше очков, чем противник. У противника такая же задача, его очки вычитаются из ваших. После вашего хода противник ходит по выбранной вами горизонатали, а вы выбираете клетку по выбранной им вертикали. Выбор максимального числа не всегде лучшее решение. Переход на следующий уровень происходит после выгрыша в двух партиях подряд.</string>
+    <string name="help">Ваша задача набрать больше очков, чем противник. У противника такая же задача, его очки вычитаются из ваших. После вашего хода противник ходит по выбранной вами горизонтали, а вы выбираете клетку по выбранной им вертикали. Выбор максимального числа не всегда лучшее решение. Переход на следующий уровень происходит после выигрыша в двух партиях подряд.</string>
+    <string name="last_level">Вы полностью прошли игру!</string>
 </resources>

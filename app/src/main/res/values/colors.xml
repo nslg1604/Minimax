@@ -13,6 +13,6 @@
     <color name="column">#FF0000FF</color>
     <color name="my_row">#FF00FF00</color>
     <color name="positive">#FF00AA00</color>
-    <color name="negative">#FFFF0000</color>
+    <color name="negative">#FF00FFFF</color>
     <color name="zero">#FF666666</color>
 </resources>

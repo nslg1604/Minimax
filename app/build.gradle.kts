@@ -7,15 +7,15 @@ plugins {
 }
 
 android {
-    namespace = "org.niaz.minimax"
+    namespace = "org.niaz.maximin"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "org.niaz.minimax"
+        applicationId = "org.niaz.maximin"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -58,6 +58,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+//    implementation ("androidx.window:window:1.4.0")
 
     // line below to avoid "AppDatabase_Impl does not exist"
     kapt("androidx.room:room-compiler:2.6.1")
